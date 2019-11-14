@@ -3,21 +3,16 @@ const forecast = require("./utils/forecast.js");
 
 if (process.argv[2]) {
     const userLocation = process.argv[2];
-    geoCode(userLocation, (error, data) => {
+    geoCode(userLocation, (error, {latitude, longitude, location}) => {
         if (error) {
             return console.log(error);
         };
-        let latitude = data.latitude;
-        let longitude = data.longitude;
-        let location = data.location;
-        forecast(latitude, longitude, (error, data) => {
+        forecast(latitude, longitude, (error, {apparentTemperature: temp, precipProbability: precipProb}) => {
             if (error) {
                 return console.log(error);
             }
-            let temperature = data.temperature;
-            let precipitationProbability = data.precipitationProbability;
-            console.log("The temperature in " + location + " is " +  temperature + " degrees Fahrenheit.");
-            console.log("The chance of precipitation is " + precipitationProbability + "%.")
+            console.log("The temperature in " + location + " is " +  temp + " degrees Fahrenheit.");
+            console.log("The chance of precipitation is " + precipProb + "%.")
         });
     });
 } else {
